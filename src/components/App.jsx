@@ -6,25 +6,23 @@ class App extends Component {
   state = {
     contacts: [],
     name: '',
-    id: '',
   };
 
   reset = () => {
-    this.setState({ name: '', id: '' });
+    this.setState({ name: '' });
   };
 
   handleInputChange = event => {
     this.setState({
       name: event.currentTarget.value,
-      id: nanoid(),
     });
   };
 
   handleSubmit = event => {
     event.preventDefault();
     console.log(this.state);
-    const { contacts, name, id } = this.state;
-    contacts.push({ name, id });
+    const { contacts, name } = this.state;
+    contacts.push({ name, id: nanoid() });
     this.reset();
   };
 
