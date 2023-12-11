@@ -6,28 +6,30 @@ class App extends Component {
   state = {
     contacts: [],
     name: '',
+    number: '',
   };
 
   reset = () => {
-    this.setState({ name: '' });
+    this.setState({ name: '', number: '' });
   };
 
   handleInputChange = event => {
+    const { name, value } = event.currentTarget
     this.setState({
-      name: event.currentTarget.value,
+      [name]: value,
     });
   };
 
   handleSubmit = event => {
     event.preventDefault();
     console.log(this.state);
-    const { contacts, name } = this.state;
-    contacts.push({ name, id: nanoid() });
+    const { contacts, name, number } = this.state;
+    contacts.push({ name, number, id: nanoid() });
     this.reset();
   };
 
   render() {
-    const { contacts, name } = this.state;
+    const { contacts, name, number } = this.state;
     return (
       <>
         <div
@@ -44,11 +46,20 @@ class App extends Component {
         </div>
         <p>Phonebook</p>
         <form onSubmit={this.handleSubmit}>
-          <label>
+          <label>Name
             <input
               type="text"
               name="name"
               value={name}
+              required
+              onChange={this.handleInputChange}
+            />
+          </label>
+          <label>Number
+            <input
+              type="tel"
+              name="number"
+              value={number}
               required
               onChange={this.handleInputChange}
             />
@@ -58,7 +69,7 @@ class App extends Component {
         <p>Contacts</p>
         <ul>
           {contacts.map(contact => {
-            return <li key={contact.id}>{contact.name}</li>;
+            return <li key={contact.id}>{contact.name} {contact.number}</li>;
           })}
         </ul>
 
