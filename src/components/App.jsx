@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { nanoid } from 'nanoid';
+import Form from './form/Form';
 // import Contacts from './contacts/Contacts';
 
 class App extends Component {
@@ -11,35 +12,43 @@ class App extends Component {
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
     filter: '',
-    name: '',
-    number: '',
   };
 
-  reset = () => {
-    this.setState({ name: '', number: '' });
-  };
-
-  handleInputChange = event => {
+  handleFilter = event => {
     const { name, value } = event.currentTarget;
     this.setState({
       [name]: value,
     });
   };
 
-  handleSubmit = event => {
-    event.preventDefault();
-    console.log(this.state);
-    const { contacts, name, number } = this.state;
-    contacts.push({ name, number, id: nanoid() });
-    this.reset();
+  // handleSubmit = event => {
+  //   event.preventDefault();
+  //   console.log(this.state);
+  //   const { contacts, name, number } = this.state;
+  //   contacts.push({ name, number, id: nanoid() });
+  //   this.reset();
+  // };
+
+  formSubmitHandler = data => {
+    const { name, number } = data;
+    const { contacts } = this.state;
+    const newContact = {
+      id: nanoid(),
+      name: name,
+      number: number,
+    };
+    this.setState(prevState => {
+      return {
+        contacts: [...prevState.contacts, newContact],
+      };
+    });
   };
 
   render() {
-    const { contacts, name, number, filter } = this.state;
+    const { contacts, filter } = this.state;
     const filteredContacts = contacts.filter(contact =>
       contact.name.toLowerCase().includes(filter.toLowerCase())
     );
-
     return (
       <>
         <div
@@ -55,36 +64,17 @@ class App extends Component {
           React homework template
         </div>
         <p>Phonebook</p>
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            Name
-            <input
-              type="text"
-              name="name"
-              value={name}
-              required
-              onChange={this.handleInputChange}
-            />
-          </label>
-          <label>
-            Number
-            <input
-              type="tel"
-              name="number"
-              value={number}
-              required
-              onChange={this.handleInputChange}
-            />
-          </label>
-          <button type="submit">Add contact</button>
-        </form>
+        <div>
+          <Form propsOnSubmit={this.formSubmitHandler} />
+        </div>
+
         <p>Contacts</p>
         <p>Find contacts by name</p>
         <input
           type="text"
           name="filter"
           value={filter}
-          onChange={this.handleInputChange}
+          onChange={this.handleFilter}
         />
         <ul>
           {filteredContacts.map(contact => {
