@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { nanoid } from 'nanoid';
-import Form from './form/Form';
-// import Contacts from './contacts/Contacts';
+import Form from 'components/form/Form';
+import Contacts from 'components/contacts/Contacts';
+import Filter from 'components/filter/Filter';
+import css from 'components/app.module.css';
 
 class App extends Component {
   state = {
@@ -21,17 +23,9 @@ class App extends Component {
     });
   };
 
-  // handleSubmit = event => {
-  //   event.preventDefault();
-  //   console.log(this.state);
-  //   const { contacts, name, number } = this.state;
-  //   contacts.push({ name, number, id: nanoid() });
-  //   this.reset();
-  // };
-
   formSubmitHandler = data => {
     const { name, number } = data;
-    const { contacts } = this.state;
+    // const { contacts } = this.state;
     const newContact = {
       id: nanoid(),
       name: name,
@@ -63,30 +57,13 @@ class App extends Component {
         >
           React homework template
         </div>
-        <p>Phonebook</p>
-        <div>
+        <div className={css['wrap']}>
+          <h2 className={css['title']}>Phonebook</h2>
           <Form propsOnSubmit={this.formSubmitHandler} />
+          <h2 className={css['title']}>Contacts</h2>
+          <Filter filter={filter} handleFilter={this.handleFilter} />
+          <Contacts contacts={filteredContacts} />
         </div>
-
-        <p>Contacts</p>
-        <p>Find contacts by name</p>
-        <input
-          type="text"
-          name="filter"
-          value={filter}
-          onChange={this.handleFilter}
-        />
-        <ul>
-          {filteredContacts.map(contact => {
-            return (
-              <li key={contact.id}>
-                {contact.name} {contact.number}
-              </li>
-            );
-          })}
-        </ul>
-
-        {/* <Contacts contacts={contacts} /> */}
       </>
     );
   }
