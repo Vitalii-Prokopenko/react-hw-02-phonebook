@@ -27,7 +27,7 @@ class App extends Component {
     const { name, number } = data;
     const { contacts } = this.state;
     const existingNames = contacts.map(contact => contact.name);
-    
+
     if (existingNames.includes(name)) {
       alert(`${name} is already in contacts`);
     } else {
@@ -42,6 +42,15 @@ class App extends Component {
         };
       });
     }
+  };
+
+  handleClickDelete = (id) => {
+        this.setState(prevState => {
+      return {
+        contacts: prevState.contacts.filter(contact => contact.id !== id),
+      };
+    });
+
   };
 
   render() {
@@ -68,7 +77,10 @@ class App extends Component {
           <Form propsOnSubmit={this.formSubmitHandler} />
           <h2 className={css['title']}>Contacts</h2>
           <Filter filter={filter} handleFilter={this.handleFilter} />
-          <Contacts contacts={filteredContacts} />
+          <Contacts
+            contacts={filteredContacts}
+            handleClickDelete={this.handleClickDelete}
+          />
         </div>
       </>
     );
