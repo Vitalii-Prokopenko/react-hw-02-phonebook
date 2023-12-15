@@ -25,17 +25,23 @@ class App extends Component {
 
   formSubmitHandler = data => {
     const { name, number } = data;
-    // const { contacts } = this.state;
-    const newContact = {
-      id: nanoid(),
-      name: name,
-      number: number,
-    };
-    this.setState(prevState => {
-      return {
-        contacts: [...prevState.contacts, newContact],
+    const { contacts } = this.state;
+    const existingNames = contacts.map(contact => contact.name);
+    
+    if (existingNames.includes(name)) {
+      alert(`${name} is already in contacts`);
+    } else {
+      const newContact = {
+        id: nanoid(),
+        name: name,
+        number: number,
       };
-    });
+      this.setState(prevState => {
+        return {
+          contacts: [...prevState.contacts, newContact],
+        };
+      });
+    }
   };
 
   render() {
